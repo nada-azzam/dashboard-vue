@@ -1,28 +1,44 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store' // your vuex store
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
     meta: {
       title: 'Home'
-  }
+    }
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    path: '/users',
+    name: 'Users',
+    component: () => import('../views/Users.vue'),
     meta: {
-      title: 'About'
-  }
+      title: 'Users'
+    }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login.vue'),
+    meta: {
+      title: 'Login',
+      notRequiresAuth: true
+
+    }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue'),
+    meta: {
+      title: 'Register'
+    }
   }
 ]
 
@@ -33,10 +49,25 @@ const router = new VueRouter({
 })
 router.afterEach((to, from, next) => {
   setTimeout(() => {
-      const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-      if (nearestWithTitle) document.title = nearestWithTitle.meta.title;
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+    if (nearestWithTitle) document.title = nearestWithTitle.meta.title;
   })
-  $('html, body').scrollTop(0)
+})
+router.beforeEach((to, from, next) => {
+  if (to.meta.notRequiresAuth) {
+    if (store.getters.isLoggedIn) {
+      next({ name: 'Home' })
+      return
+    }
+    next()
+  } else {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next({ name: 'login' })
+  }
+  next()
 })
 
 
