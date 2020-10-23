@@ -17,9 +17,42 @@ const routes = [
   {
     path: '/users',
     name: 'Users',
-    component: () => import('../views/Users.vue'),
+    component: () => import('../views/User/Users.vue'),
     meta: {
       title: 'Users'
+    }
+  },
+  {
+    path: '/create/user',
+    name: 'create-user',
+    component: () => import('../views/User/components/AddEditUser.vue'),
+    meta: {
+      title: 'Create User'
+    }
+  },
+  {
+    path: '/edit/user/:id',
+    name: 'edit-user',
+    component: () => import('../views/User/components/AddEditUser.vue'),
+    meta: {
+      title: 'Edit User'
+    }
+  },
+  {
+    path: '/show/user/:id',
+    name: 'show-user',
+    component: () => import('../views/User/components/UserInfo.vue'),
+    meta: {
+      title: 'Show User'
+    }
+  },
+
+  {
+    path: '/resources',
+    name: 'resources',
+    component: () => import('../views/Resources/Resources.vue'),
+    meta: {
+      title: ' Resources'
     }
   },
   {

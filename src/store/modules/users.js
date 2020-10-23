@@ -1,8 +1,7 @@
 import http from '../../config/http';
 import endpoints from '../../services/endpoints';
 const userApiUrl = endpoints.USER_ENDPOINT
-export const user = {
-    namespaced: true,
+ const users = {
     state: {
         userList: null
     },
@@ -12,17 +11,18 @@ export const user = {
         },
     },
     actions: {
-        userList({ commit }, pageNumber) {
-            http.get(`${userApiUrl}?page${pageNumber}`).then(res => {
+        getUserList({ commit }, pageNumber) {
+            http.get(`${userApiUrl}?page=${pageNumber}`).then(res => {
                 commit("USER_LIST", res.data);
-                console.log(res)
+                // console.log(res.data)
+                return res
 
             })
         }
     },
     getters: {
-        getSearchList: state => state.userList
+        users: state => state.userList
     },
 
 };
-export default loader;
+export default users;

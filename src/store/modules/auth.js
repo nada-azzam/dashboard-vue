@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import axios from 'axios'
 import endpoints from '../../services/endpoints'
+import base from '../../config/http'
 
 const signinApiUrl = endpoints.SIGN_IN_ENDPOINT
 const signupApiUrl = endpoints.SIGN_UP_ENDPOINT
 
-export const auth = {
-    namespaced: true,
+ const auth = {
     state: {
         isLoggining: false,
         status: '',
@@ -44,7 +44,8 @@ export const auth = {
                         const token = resp.data.token
                         const bearerToken = 'Bearer ' + token
                         localStorage.setItem('token', token)
-                        Vue.prototype.$http.defaults.headers.common['Authorization'] = bearerToken
+                        // Vue.prototype.$http.defaults.headers.common['Authorization'] = bearerToken
+                        base.defaults.headers.common['Authorization'] = bearerToken
                         commit('auth_success', bearerToken)
                         resolve(resp)
                     })
@@ -71,7 +72,7 @@ export const auth = {
                         if (resp.status == 200) {
                             const token = resp.data.token
                             const bearerToken = 'Bearer ' + token
-                            const loginUser = resp.data.user
+                            const loginUser = resp.data.id
                             localStorage.setItem('token', token)
                             localStorage.setItem('user_id', loginUser)
                             Vue.prototype.$http.defaults.headers.common['Authorization'] = bearerToken

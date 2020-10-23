@@ -72,7 +72,6 @@
 
 <script>
 import { required, email, max, min } from "vee-validate/dist/rules";
-import store from "../store";
 import {
   extend,
   ValidationObserver,
@@ -124,16 +123,19 @@ export default {
       const email = this.email;
       const password = this.password;
       this.$store
-        .dispatch("Auth/signIn", {
+        .dispatch("signIn", {
           email,
           password,
         })
-        .then(() => {
+        .then((res) => {
           this.$router.push("/users");
+          console.log(res+'success')
         })
         .catch((err) => {
           if (err ) {
             this.invalidEmail = true;
+          console.log(err+'error')
+
           }
         });
     },

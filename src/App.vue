@@ -2,7 +2,8 @@
   <!-- App.vue -->
 
   <v-app>
-    <v-navigation-drawer v-if="isLoggining"
+    <v-navigation-drawer
+      v-if="isLoggining"
       app
       v-model="drawer"
       :mini-variant.sync="mini"
@@ -39,7 +40,7 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block> Logout </v-btn>
+          <v-btn @click="logout()" block color="primary"> Logout </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -52,7 +53,10 @@
       dark
       scroll-target="#scrolling-techniques"
     >
-      <v-app-bar-nav-icon v-if="isLoggining" @click.stop="mini = !mini"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        v-if="isLoggining"
+        @click.stop="mini = !mini"
+      ></v-app-bar-nav-icon>
 
       <v-toolbar-title>Dashboard </v-toolbar-title>
 
@@ -76,8 +80,22 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        <v-list v-if="isLoggining" dense>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-login-variant</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title @click="logout()">Logout</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </v-menu>
     </v-app-bar>
+    <!-- ADS -->
+    <ADS :isAdsShow="isAdsShow" />
+
     <v-sheet id="scrolling-techniques">
       <v-container style="height: 100px"> </v-container>
     </v-sheet>
@@ -91,71 +109,57 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-
-    <!-- <v-footer app dark padless absolute>
-      <v-card flat tile class="indigo lighten-1 white--text text-center">
-        <v-card-text>
-          <v-btn
-            v-for="icon in icons"
-            :key="icon"
-            class="mx-4 white--text"
-            icon
-          >
-            <v-icon size="24px">{{ icon }}</v-icon>
-          </v-btn>
-        </v-card-text>
-
-        <v-card-text class="white--text pt-0">
-          Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet.
-          Mauris cursus commodo interdum. Praesent ut risus eget metus luctus
-          accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim
-          a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula
-          lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus
-          iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum
-          tempor vel ut orci. Orci varius natoque penatibus et magnis dis
-          parturient montes, nascetur ridiculus mus.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-text class="white--text">
-          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-        </v-card-text>
-      </v-card>
-    </v-footer> -->
   </v-app>
 </template>
 
 <script>
 import NavDrawer from "./components/NavDrawer";
-
+import ADS from "./components/AdsDialog";
+import { mapGetters } from "vuex";
 export default {
   name: "App",
 
   components: {
-    
     NavDrawer,
+    ADS,
+  },
+  mounted() {},
+  methods: {
+    logout() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    },
   },
 
   data() {
     return {
       drawer: true,
+      isAdsShow:false,
       items: [
         { title: "Home", icon: "dashboard", path: "/" },
         { title: "Users", icon: "mdi-face-profile-woman", path: "/users" },
+        { title: "Resources", icon: "mdi-human-greeting", path: "/resources" },
       ],
       icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
       mini: true,
       menueList: [
-        { title: "Create Account",icon:"face", path: "/register" },
-        { title: "Login",icon:"mdi-login-variant", path: "/login" },
+        { title: "Create Account", icon: "face", path: "/register" },
+        { title: "Login", icon: "mdi-login-variant", path: "/login" },
       ],
     };
   },
-    computed: {
-        isLoggining() {
-            return this.$store.getters.authStatus
-        },
+  watch: {
+    $route(to, from) {
+      if (to.name != "login" && to.name != "register") {
+         this.isAdsShow=true
+      }
     },
+  },
+  computed: {
+    isLoggining() {
+      return this.$store.getters.isLoggedIn;
+    },
+  },
 };
 </script>

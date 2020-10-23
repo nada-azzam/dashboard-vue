@@ -118,7 +118,7 @@ export default {
       // this.$refs.observer.validate();
       const email = this.email;
       const password = this.password;
-      this.$store.dispatch("Auth/signUp", {
+      this.$store.dispatch("signUp", {
         email,
         password,
       }).then(() => {
