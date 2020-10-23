@@ -38,14 +38,6 @@ const routes = [
       title: 'Edit User'
     }
   },
-  {
-    path: '/show/user/:id',
-    name: 'show-user',
-    component: () => import('../views/User/components/UserInfo.vue'),
-    meta: {
-      title: 'Show User'
-    }
-  },
 
   {
     path: '/resources',

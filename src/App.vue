@@ -151,7 +151,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to.name != "login" && to.name != "register") {
+      if (to.name !== "login" && from.name !== "login" && to.name !== "Register"  && from.name !== "Register") {
          this.isAdsShow=true
       }
     },

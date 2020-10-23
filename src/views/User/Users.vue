@@ -57,9 +57,7 @@
               <v-btn @click="deleteUser(item.id)" class="mx-2" fab dark small color="pink">
                 <v-icon dark> mdi-delete </v-icon>
               </v-btn>
-              <v-btn :to="{name:'show-user', params:{id:item.id}}" class="mx-2" fab dark small color="warning">
-                <v-icon>mdi-television</v-icon>
-              </v-btn>
+              <SingleUser :id="item.id"/>
               
             </td>
           </tr>
@@ -101,6 +99,7 @@
 
 <script>
 import UserService from '../../services/Api/users';
+import SingleUser from './components/UserInfo';
 export default {
   data() {
     return {
@@ -110,6 +109,9 @@ export default {
   },
   created() {
     this.getUserPerPage(this.pageNumber)
+  },
+  components:{
+    SingleUser
   },
   methods:{
     getUserPerPage(page){
