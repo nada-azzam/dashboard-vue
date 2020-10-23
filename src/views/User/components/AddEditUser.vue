@@ -2,14 +2,10 @@
   <v-container fill-height="fill-height">
     <v-layout align-center="align-center" justify-center="justify-center">
       <v-flex class="login-form text-xs-center">
-           <!-- SNACKBAR -->
-     <v-snackbar
-      v-model="isSubmitted"
-      color="success"    
-      top
-    >
-    {{$route.params.id ? 'Updated' :'Saved'}} Successfully  
-    </v-snackbar>
+        <!-- SNACKBAR -->
+        <v-snackbar v-model="isSubmitted" color="success" top>
+          {{ $route.params.id ? "Updated" : "Saved" }} Successfully
+        </v-snackbar>
         <v-card>
           <v-card-title>
             <span class="headline">User Profile</span>
@@ -51,7 +47,7 @@
                     type="submit"
                     :disabled="invalid"
                   >
-                    {{$route.params.id ? 'Update' :'Save'}}
+                    {{ $route.params.id ? "Update" : "Save" }}
                   </v-btn>
                 </form>
               </validation-observer>
@@ -90,7 +86,7 @@ export default {
     name: "",
     job: "",
     id: 1,
-    isSubmitted:false
+    isSubmitted: false,
   }),
   mounted() {
     if (this.$route.params.id) {
@@ -106,17 +102,21 @@ export default {
       });
     },
     createUser() {
-      const add = {};
+      const add = {
+        name: this.name,
+        job: this.job,
+      };
       UserService.createUser(add).then((res) => {
-        this.isSubmitted=true
-        
+        this.isSubmitted = true;
       });
     },
     updateUser(id) {
-      const update = {};
+      const update = {
+        name: this.name,
+        job: this.job,
+      };
       UserService.updateUser(id, update).then((res) => {
-        this.isSubmitted=true
-        
+        this.isSubmitted = true;
       });
     },
     submit() {
